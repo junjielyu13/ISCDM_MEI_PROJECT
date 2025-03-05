@@ -10,9 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="../assets/index.css">
     </head>
     <body>
-        <form action="servletEjemplo" method="post">
+        <form action="userServlet" method="post">
             <input type="text" name="user"/>
             <input type="password" name="passwd"/>
             <input type="submit" value="Enviar"/>            

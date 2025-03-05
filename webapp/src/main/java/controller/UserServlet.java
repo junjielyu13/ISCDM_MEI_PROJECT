@@ -1,4 +1,4 @@
-package servlet;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,14 +8,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import bd.usuario;
+import model.User;
 
 /**
  *
- * @author alumne
+ * @author alumness
  */
-@WebServlet(name = "servletEjemplo", urlPatterns = {"/servletEjemplo"})
-public class servletEjemplo extends HttpServlet {
+@WebServlet(name = "userServlet", urlPatterns = {"/jsp/userServlet"})
+public class UserServlet extends HttpServlet { 
 
     
     /**
@@ -51,7 +51,7 @@ public class servletEjemplo extends HttpServlet {
             String user = request.getParameter("user");
             String passwd = request.getParameter("passwd");
             
-            String result = new usuario().queryTest(user, passwd);                        
+            String result = new User().queryTest(user, passwd);                        
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
