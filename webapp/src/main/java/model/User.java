@@ -1,37 +1,34 @@
 package model;
 
-import config.DatabaseConfig;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;  
-
-/**
- *
- * @author silviall
- */
 public class User {
+    private String idUsuario;
+    private String password;
 
-    public String queryTest(String user, String passwd) {
-        String result = "El usuario existe";
+    public User() {}
 
-        try (Connection c = DatabaseConfig.getConnection()) { // 使用 DatabaseConfig 获取连接
-            String query = "SELECT COUNT(*) FROM usuarios WHERE id_usuario=? AND password=?";
-            try (PreparedStatement statement = c.prepareStatement(query)) {
-                statement.setString(1, user);
-                statement.setString(2, passwd);
-
-                try (ResultSet r = statement.executeQuery()) {
-                    if (r.next() && r.getInt(1) == 0) {
-                        result = "El usuario no existe";
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        }
-
-        return result;
+    public User(String idUsuario, String password) {
+        this.idUsuario = idUsuario;
+        this.password = password;
     }
-    
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "idUsuario='" + idUsuario + "', password='" + password + "'}";
+    }
 }

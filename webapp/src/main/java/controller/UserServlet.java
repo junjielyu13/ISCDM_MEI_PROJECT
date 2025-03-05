@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import model.User;
+import service.UserService;
 
 /**
  *
@@ -17,6 +18,7 @@ import model.User;
 @WebServlet(name = "userServlet", urlPatterns = {"/jsp/userServlet"})
 public class UserServlet extends HttpServlet { 
 
+    private final UserService usuarioService = new UserService();
     
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -48,11 +50,21 @@ public class UserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String user = request.getParameter("user");
+            String username = request.getParameter("user");
             String passwd = request.getParameter("passwd");
             
-            String result = new User().queryTest(user, passwd);                        
+            User user = new User(username, passwd);
+            boolean existe = usuarioService.validarUsuario(user);                        
             
+            String result;
+            if (existe) {
+                result = "El usuario existe";
+                // response.getWriter().write("El usuario existe");
+            } else {
+                result = "El usuario no exist";
+                //response.getWriter().write("El usuario no existe");
+            }
+                    
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
