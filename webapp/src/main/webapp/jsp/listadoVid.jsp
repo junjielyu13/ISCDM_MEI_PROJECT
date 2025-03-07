@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -51,12 +52,12 @@
         <thead>
             <tr>
                 <th>Identificador</th>
-                <th>Título</th>
+                <th>TÃ­tulo</th>
                 <th>Autor</th>
-                <th>Fecha de Creación</th>
-                <th>Duración (min)</th>
+                <th>Fecha de CreaciÃ³n</th>
+                <th>DuraciÃ³n (min)</th>
                 <th>Reproducciones</th>
-                <th>Descripción</th>
+                <th>DescripciÃ³n</th>
                 <th>Formato</th>
             </tr>
         </thead>

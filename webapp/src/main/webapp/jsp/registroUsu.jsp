@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -72,20 +73,20 @@
         <label for="apellidos">Apellidos</label>
         <input type="text" id="apellidos" name="apellidos" required />
 
-        <!-- Correo Electrónico -->
-        <label for="correo">Correo Electrónico</label>
+        <!-- Correo ElectrÃ³nico -->
+        <label for="correo">Correo ElectrÃ³nico</label>
         <input type="email" id="correo" name="correo" required />
 
         <!-- Nombre de Usuario -->
         <label for="usuario">Nombre de Usuario</label>
         <input type="text" id="usuario" name="usuario" required />
 
-        <!-- Contraseña -->
-        <label for="password">Contraseña</label>
+        <!-- ContraseÃ±a -->
+        <label for="password">ContraseÃ±a</label>
         <input type="password" id="password" name="password" required />
 
-        <!-- Confirmación de Contraseña -->
-        <label for="confirm_password">Confirmación de Contraseña</label>
+        <!-- ConfirmaciÃ³n de ContraseÃ±a -->
+        <label for="confirm_password">ConfirmaciÃ³n de ContraseÃ±a</label>
         <input type="password" id="confirm_password" name="confirm_password" required />
 
         <!-- Submit Button -->

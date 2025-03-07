@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,28 +64,28 @@
             <label for="identificador">Identificador:</label>
             <input type="text" id="identificador" name="identificador" required>
 
-            <!-- Título -->
-            <label for="titulo">Título:</label>
+            <!-- TÃ­tulo -->
+            <label for="titulo">TÃ­tulo:</label>
             <input type="text" id="titulo" name="titulo" required>
 
             <!-- Autor -->
             <label for="autor">Autor:</label>
             <input type="text" id="autor" name="autor" required>
 
-            <!-- Fecha de Creación -->
-            <label for="fecha_creacion">Fecha de Creación:</label>
+            <!-- Fecha de CreaciÃ³n -->
+            <label for="fecha_creacion">Fecha de CreaciÃ³n:</label>
             <input type="date" id="fecha_creacion" name="fecha_creacion" required>
 
-            <!-- Duración -->
-            <label for="duracion">Duración (en minutos):</label>
+            <!-- DuraciÃ³n -->
+            <label for="duracion">DuraciÃ³n (en minutos):</label>
             <input type="number" id="duracion" name="duracion" min="1" required>
 
-            <!-- Número de Reproducciones -->
-            <label for="numero_reproducciones">Número de Reproducciones:</label>
+            <!-- NÃºmero de Reproducciones -->
+            <label for="numero_reproducciones">NÃºmero de Reproducciones:</label>
             <input type="number" id="numero_reproducciones" name="numero_reproducciones" min="0" value="0" required>
 
-            <!-- Descripción -->
-            <label for="descripcion">Descripción:</label>
+            <!-- DescripciÃ³n -->
+            <label for="descripcion">DescripciÃ³n:</label>
             <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
 
             <!-- Formato -->

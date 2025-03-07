@@ -1,9 +1,10 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Iniciar SesiÃ³n</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,7 +61,7 @@
 <body>
 
 <div class="container">
-    <h2>Iniciar Sesión</h2>
+    <h2>Iniciar SesiÃ³n</h2>
 
     <!-- Login form -->
     <form action="LoginServlet" method="post">
@@ -68,12 +69,12 @@
         <label for="usuario">Nombre de Usuario</label>
         <input type="text" id="usuario" name="usuario" required />
 
-        <!-- Contraseña -->
-        <label for="password">Contraseña</label>
+        <!-- ContraseÃ±a -->
+        <label for="password">ContraseÃ±a</label>
         <input type="password" id="password" name="password" required />
 
         <!-- Login Button -->
-        <button type="submit" class="btn">Iniciar Sesión</button>
+        <button type="submit" class="btn">Iniciar SesiÃ³n</button>
     </form>
 
     <!-- Register Button -->
