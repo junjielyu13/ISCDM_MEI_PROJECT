@@ -28,14 +28,19 @@
         
         <h2>Registrar Video</h2>
 
-        <!-- Error Message (only show if there is an error) -->
-        <div class="error" id="errorMessage" style="display: none;">
-            Error: Ya existe un video con el mismo Identificador. Por favor, intente con otro ID.
-        </div>
+        <!-- Display error message if it exists -->
+        <c:if test="${not empty error}">
+            <p class="error">${error}</p>
+        </c:if>
+
+        <!-- Display success message if it exists -->
+        <c:if test="${not empty success}">
+            <p class="success">${success}</p>
+        </c:if>
 
  
         <!-- Updated Form to Support Video Upload -->
-        <form id="videoForm" action="/jsp/videoRegistrationServlet" method="post" enctype="multipart/form-data">
+        <form id="videoForm" action="videoRegistrationServlet" method="post" enctype="multipart/form-data">
             <!-- Identificador -->
 
             <!-- Título -->
