@@ -94,28 +94,24 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // 注册处理逻辑
     private void handleRegister(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
-        // 校验所有必要的注册字段
         if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
-            showErrorMessage(out, "Register Todos los campos son obligatorios para el registro.");
+            request.setAttribute("error", "Register Todos los campos son obligatorios para el registro.");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
             return;
         }
-
-        // 创建新用户对象
         User newUser = new User(username, passwd, email, name, surname);
         boolean registrado = usuarioService.registrarUsuario(newUser);
 
         if (registrado) {
-            // 注册成功，转发到注册成功页面
-            request.setAttribute("success", "Usuario registrado correctamente. Por favor, inicie sesión.");
+            request.setAttribute("success", "Usuario registrado correctamente. Por favor, <a href='login.jsp'>inicie sesión</a>.");
             request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
         } else {
-            showErrorMessage(out, "Error al registrar el usuario.");
+            request.setAttribute("error", "Error al registrar el usuario, el usuario ha registrado");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
         }
     }
 
-    // 错误消息处理方法
     private void showErrorMessage(PrintWriter out, String message) {
         out.println("<html><body><h1>Error: " + message + "</h1></body></html>");
     }

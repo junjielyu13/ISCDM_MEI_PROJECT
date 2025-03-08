@@ -11,6 +11,16 @@
     <div class="container">
         <h2>Registration Form</h2>
 
+        <!-- Display error message if it exists -->
+        <c:if test="${not empty error}">
+            <p class="error">${error}</p>
+        </c:if>
+
+        <!-- Display success message if it exists -->
+        <c:if test="${not empty success}">
+            <p class="success">${success}</p>
+        </c:if>
+        
         <form action="userServlet" method="post">
             <input type="hidden" name="action" value="Register" />
 
@@ -42,15 +52,6 @@
             <button type="submit" class="btn">Register</button>
         </form>
 
-        <!-- Display error message if it exists -->
-        <c:if test="${not empty error}">
-            <p class="error">${error}</p>
-        </c:if>
-
-        <!-- Display success message if it exists -->
-        <c:if test="${not empty success}">
-            <p class="success">${success}</p>
-        </c:if>
     </div>
 
     <script>
