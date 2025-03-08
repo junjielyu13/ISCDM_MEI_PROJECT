@@ -11,28 +11,28 @@
     <div class="container">
         <h2>Registration Form</h2>
 
-        <form action="/jsp/userServlet" method="post">
+        <form action="userServlet" method="post">
             <input type="hidden" name="action" value="Register" />
 
             <!-- First Name -->
             <label for="nombre">First Name</label>
-            <input type="text" id="nombre" name="name" required />
+            <input type="text" id="name" name="name" required />
 
             <!-- Last Name -->
             <label for="apellidos">Last Name</label>
-            <input type="text" id="apellidos" name="surname" required />
+            <input type="text" id="surname" name="surname" required />
 
             <!-- Email -->
             <label for="correo">Email</label>
-            <input type="email" id="correo" name="email" required />
+            <input type="email" id="email" name="email" required />
 
             <!-- Username -->
             <label for="usuario">Username</label>
-            <input type="text" id="usuario" name="username" required />
+            <input type="text" id="username" name="username" required />
 
             <!-- Password -->
             <label for="password">Password</label>
-            <input type="password" id="password" name="passwd" required />
+            <input type="password" id="password" name="password" required />
 
             <!-- Confirm Password -->
             <label for="confirm_password">Confirm Password</label>

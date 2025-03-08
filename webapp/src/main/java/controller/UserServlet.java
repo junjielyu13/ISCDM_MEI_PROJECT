@@ -98,7 +98,7 @@ public class UserServlet extends HttpServlet {
     private void handleRegister(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
         // 校验所有必要的注册字段
         if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
-            showErrorMessage(out, "Todos los campos son obligatorios para el registro.");
+            showErrorMessage(out, "Register Todos los campos son obligatorios para el registro.");
             return;
         }
 
