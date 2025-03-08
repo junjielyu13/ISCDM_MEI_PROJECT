@@ -42,24 +42,9 @@
             <label for="titulo">Título:</label>
             <input type="text" id="titulo" name="titulo" required>
 
-            <!-- Autor -->
-            <label for="autor">Autor:</label>
-            <input type="text" id="autor" name="autor" required>
-
             <!-- Descripción -->
             <label for="descripcion">Descripción:</label>
             <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
-
-            <!-- Formato -->
-            <label for="formato">Formato:</label>
-            <select id="formato" name="formato" required>
-                <option value="MP4">MP4</option>
-                <option value="AVI">AVI</option>
-                <option value="MKV">MKV</option>
-                <option value="MOV">MOV</option>
-                <option value="FLV">FLV</option>
-                <option value="WMV">WMV</option>
-            </select>
 
             <!-- Video File Upload -->
             <label for="video">Seleccionar Video:</label>

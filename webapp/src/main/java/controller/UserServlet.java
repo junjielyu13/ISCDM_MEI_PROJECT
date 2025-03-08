@@ -57,9 +57,10 @@ public class UserServlet extends HttpServlet {
         User user = new User(username, passwd);
         boolean existe = usuarioService.validarUsuario(user);
 
-            if (existe) {
+        if (existe) {
+            User sessionUser = usuarioService.getUserByUsername(username);
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("user", sessionUser);
             session.setMaxInactiveInterval(60 * 60);
         
             response.sendRedirect(request.getContextPath() + "/jsp/registroVid.jsp");

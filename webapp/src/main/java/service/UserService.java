@@ -11,6 +11,10 @@ public class UserService {
     public boolean validarUsuario(User user) {
         return userDao.findByUsername(user.getUsername()) != null;
     }
+    
+    public User getUserByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
 
     public boolean registrarUsuario(User user) {
         if (userDao.findByUsername(user.getUsername()) != null) {

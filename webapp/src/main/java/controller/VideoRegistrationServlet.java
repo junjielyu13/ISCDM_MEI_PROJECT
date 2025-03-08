@@ -6,9 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.UUID;
+import model.User;
 import model.Video;
 import service.VideoService;
 
@@ -25,10 +28,10 @@ public class VideoRegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Get form parameters (title, description, format, etc.)
+        User user = (User) request.getSession().getAttribute("user");
         String title = request.getParameter("titulo");
-        String author = request.getParameter("autor");
         String description = request.getParameter("descripcion");
-        String format = request.getParameter("formato");
+        
 
         // Get the uploaded video file
         Part videoPart = request.getPart("video");
@@ -56,6 +59,8 @@ public class VideoRegistrationServlet extends HttpServlet {
         // Save the video file to the server
         File uploadedFile = new File(uploadDir, uniqueFileName);
         videoPart.write(uploadedFile.getAbsolutePath());
+        int videoDuration = this.getVideoDuration(uploadedFile.getAbsolutePath());
+
 
         // Create a Video object and populate its properties
         Video video = new Video(
@@ -63,10 +68,10 @@ public class VideoRegistrationServlet extends HttpServlet {
                 title,
                 description,
                 "/uploads/videos/" + uniqueFileName, // Store the relative path of the video
-                Integer.parseInt(author), // Assuming author is a user ID
+                user.getIdUser(), // Assuming author is a user ID
                 0, // Initially, the video has 0 views
-                0, // Initially, the video has 0 duration (this could be updated later if needed)
-                format,
+                videoDuration, // Initially, the video has 0 duration (this could be updated later if needed)
+                fileExtension,
                 null // You could add logic to automatically set the uploaded time if required
         );
 
@@ -81,5 +86,37 @@ public class VideoRegistrationServlet extends HttpServlet {
             request.setAttribute("error", "Error occurred while registering the video. Please try again.");
             request.getRequestDispatcher("/jsp/yourUploadPage.jsp").forward(request, response);
         }
+    }
+    
+    public int getVideoDuration(String videoFilePath) {
+        try {
+            // Command to get video information (e.g., duration)
+            String cmd = "ffmpeg -i " + videoFilePath;
+
+            // Execute the command
+            Process process = Runtime.getRuntime().exec(cmd);
+            
+            // Read the output from the command
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line;
+            int duration = 0;
+            
+            // Parse the output to find the duration (in seconds)
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Duration")) {
+                    String[] parts = line.split(",")[0].split(" ")[1].split(":");
+                    int hours = Integer.parseInt(parts[0]);
+                    int minutes = Integer.parseInt(parts[1]);
+                    int seconds = Integer.parseInt(parts[2].split("\\.")[0]);
+                    duration = hours * 3600 + minutes * 60 + seconds;
+                    break;
+                }
+            }
+            process.waitFor();
+            return duration; // Duration in seconds
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0; // Return 0 if there is an error or no duration found
     }
 }

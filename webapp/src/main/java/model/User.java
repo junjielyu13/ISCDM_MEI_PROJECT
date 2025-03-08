@@ -1,7 +1,7 @@
 package model;
 
 public class User {
-    private String idUser;
+    private int idUser;
     private String username;    
     private String password;    
     private String email;   
@@ -28,12 +28,22 @@ public class User {
         this.name = name;
         this.surname = surname;
     }
+    
+    public User(String userId, String username, String password, String email, String name, String surname) {
+        this.idUser = Integer.parseInt(userId);
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+    }
 
-    public String getIdUser() {
+ 
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
     
