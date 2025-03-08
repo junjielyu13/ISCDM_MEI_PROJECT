@@ -1,31 +1,33 @@
 package service;
 
-import config.DatabaseConfig;
+import java.util.List;
+import dao.UserDAO;
 import model.User;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class UserService {
 
-    public boolean validarUsuario(User usuario) {
-        String query = "SELECT COUNT(*) FROM usuarios WHERE id_usuario = ? AND password = ?";
+    private final UserDAO userDao = new UserDAO();
 
-        try (Connection c = DatabaseConfig.getConnection();
-             PreparedStatement statement = c.prepareStatement(query)) {
-             
-            statement.setString(1, usuario.getIdUsuario());
-            statement.setString(2, usuario.getPassword());
+    public boolean validarUsuario(User user) {
+        return userDao.findByUsername(user.getUsername()) != null;
+    }
 
-            try (ResultSet r = statement.executeQuery()) {
-                return r.next() && r.getInt(1) > 0; // 如果返回的行数 > 0，则用户存在
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error en la base de datos: " + e.getMessage());
-            return false;
+    public boolean registrarUsuario(User user) {
+        if (userDao.findByUsername(user.getUsername()) != null) {
+            return false; 
         }
+        return userDao.save(user);
+    }
+
+    public List<User> obtenerTodosUsuarios() {
+        return userDao.getAllUsers();
+    }
+
+    public boolean actualizarContraseña(String username, String newPassword) {
+        return userDao.updatePassword(username, newPassword);
+    }
+
+    public boolean eliminarUsuario(String username) {
+        return userDao.deleteUser(username);
     }
 }

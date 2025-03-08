@@ -11,80 +11,113 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import service.UserService;
 
-/**
- *
- * @author alumness
- */
 @WebServlet(name = "userServlet", urlPatterns = {"/jsp/userServlet"})
 public class UserServlet extends HttpServlet { 
 
     private final UserService usuarioService = new UserService();
-    
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {    
-                out.println("<html><body>Method not supported</body></html>");
+        
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<html><body>");
+            out.println("<h1>Bienvenido, elige una opción</h1>");
+            out.println("<h2>Login</h2>");
+            out.println("<form action='/jsp/userServlet' method='POST'>");
+            out.println("Username: <input type='text' name='user' /><br>");
+            out.println("Password: <input type='password' name='passwd' /><br>");
+            out.println("<input type='submit' value='Login' name='action' />");
+            out.println("</form>");
+            out.println("<h2>Register</h2>");
+            out.println("<form action='/jsp/userServlet' method='POST'>");
+            out.println("Username: <input type='text' name='user' /><br>");
+            out.println("Password: <input type='password' name='passwd' /><br>");
+            out.println("Email: <input type='email' name='email' /><br>");
+            out.println("<input type='submit' value='Register' name='action' />");
+            out.println("</form>");
+            out.println("</body></html>");
         }
     }
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String username = request.getParameter("username");
+        String passwd = request.getParameter("password");
+        String email = request.getParameter("email");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String action = request.getParameter("action");
+
+        // 输出响应的打印对象
         try (PrintWriter out = response.getWriter()) {
-            
-            String username = request.getParameter("user");
-            String passwd = request.getParameter("passwd");
-            
-            User user = new User(username, passwd);
-            boolean existe = usuarioService.validarUsuario(user);                        
-            
-            String result;
-            if (existe) {
-                result = "El usuario existe";
-                // response.getWriter().write("El usuario existe");
-            } else {
-                result = "El usuario no exist";
-                //response.getWriter().write("El usuario no existe");
+            // 处理没有传入 action 的情况
+            if (action == null || action.trim().isEmpty()) {
+                showErrorMessage(out, "Acción no válida");
+                return;
             }
-                    
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletEjemplo</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> " + result + " </h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+            // 根据动作进行不同的操作
+            switch (action) {
+                case "Login":
+                    handleLogin(request, response, out, username, passwd);
+                    break;
+                case "Register":
+                    handleRegister(request, response, out, username, passwd, email, name, surname);
+                    break;
+                default:
+                    showErrorMessage(out, "Acción no válida");
+                    break;
+            }
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    // 登录处理逻辑
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws IOException {
+        // 校验用户名和密码
+        if (username == null || passwd == null || username.trim().isEmpty() || passwd.trim().isEmpty()) {
+            showErrorMessage(out, "Todos los campos son obligatorios para el inicio de sesión.");
+            return;
+        }
 
+        User user = new User(username, passwd);
+        boolean existe = usuarioService.validarUsuario(user);
+
+        if (existe) {
+            out.println("<html><body><h1>Bienvenido, " + user.getUsername() + "!</h1></body></html>");
+        } else {
+            out.println("<html><body><h1>Usuario o contraseña incorrectos</h1></body></html>");
+        }
+    }
+
+    // 注册处理逻辑
+    private void handleRegister(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
+        // 校验所有必要的注册字段
+        if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
+            showErrorMessage(out, "Todos los campos son obligatorios para el registro.");
+            return;
+        }
+
+        // 创建新用户对象
+        User newUser = new User(username, passwd, email, name, surname);
+        boolean registrado = usuarioService.registrarUsuario(newUser);
+
+        if (registrado) {
+            // 注册成功，转发到注册成功页面
+            request.setAttribute("success", "Usuario registrado correctamente. Por favor, inicie sesión.");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+        } else {
+            showErrorMessage(out, "Error al registrar el usuario.");
+        }
+    }
+
+    // 错误消息处理方法
+    private void showErrorMessage(PrintWriter out, String message) {
+        out.println("<html><body><h1>Error: " + message + "</h1></body></html>");
+    }
 }
+        
