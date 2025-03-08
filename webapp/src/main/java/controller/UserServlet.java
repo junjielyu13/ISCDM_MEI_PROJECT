@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import model.User;
 import service.UserService;
@@ -15,18 +16,6 @@ import service.UserService;
 public class UserServlet extends HttpServlet { 
 
     private final UserService usuarioService = new UserService();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<html><body>");
-            out.println("<h1>Bienvenido, elige una opción</h1>");
-            out.println("</body></html>");
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +31,6 @@ public class UserServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             if (action == null || action.trim().isEmpty()) {
-                showErrorMessage(out, "Acción no válida");
                 return;
             }
 
@@ -54,7 +42,6 @@ public class UserServlet extends HttpServlet {
                     handleRegister(request, response, out, username, passwd, email, name, surname);
                     break;
                 default:
-                    showErrorMessage(out, "Acción no válida");
                     break;
             }
         }
@@ -62,7 +49,8 @@ public class UserServlet extends HttpServlet {
 
     private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws ServletException, IOException {
         if (username == null || passwd == null || username.trim().isEmpty() || passwd.trim().isEmpty()) {
-            showErrorMessage(out, "Todos los campos son obligatorios para el inicio de sesión.");
+            request.setAttribute("error", "Todos los campos son obligatorios para el inicio de sesión.");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
             return;
         }
 
@@ -70,6 +58,10 @@ public class UserServlet extends HttpServlet {
         boolean existe = usuarioService.validarUsuario(user);
 
         if (existe) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(60 * 60);
+        
             response.sendRedirect(request.getContextPath() + "/jsp/ejemplo.jsp");
         } else {
             request.setAttribute("error", "login failed");
@@ -93,10 +85,6 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("error", "Error al registrar el usuario, el usuario ha registrado");
             request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
         }
-    }
-
-    private void showErrorMessage(PrintWriter out, String message) {
-        out.println("<html><body><h1>Error: " + message + "</h1></body></html>");
     }
 }
         
