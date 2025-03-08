@@ -61,20 +61,21 @@
 <body>
 
 <div class="container">
-    <h2>Iniciar SesiÃ³n</h2>
+    <h2>Login</h2>
 
     <!-- Login form -->
-    <form action="LoginServlet" method="post">
+    <form action="userServlet" method="post">
+        <input type="hidden" name="action" value="login" />
         <!-- Usuario -->
-        <label for="usuario">Nombre de Usuario</label>
-        <input type="text" id="usuario" name="usuario" required />
+        <label for="usuario">Username:</label>
+        <input type="text" id="username" name="username" required />
 
         <!-- ContraseÃ±a -->
-        <label for="password">ContraseÃ±a</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password" required />
 
         <!-- Login Button -->
-        <button type="submit" class="btn">Iniciar SesiÃ³n</button>
+        <button type="submit" class="btn">Login</button>
     </form>
 
     <!-- Register Button -->

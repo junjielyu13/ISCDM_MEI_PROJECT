@@ -24,19 +24,6 @@ public class UserServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.println("<html><body>");
             out.println("<h1>Bienvenido, elige una opción</h1>");
-            out.println("<h2>Login</h2>");
-            out.println("<form action='/jsp/userServlet' method='POST'>");
-            out.println("Username: <input type='text' name='user' /><br>");
-            out.println("Password: <input type='password' name='passwd' /><br>");
-            out.println("<input type='submit' value='Login' name='action' />");
-            out.println("</form>");
-            out.println("<h2>Register</h2>");
-            out.println("<form action='/jsp/userServlet' method='POST'>");
-            out.println("Username: <input type='text' name='user' /><br>");
-            out.println("Password: <input type='password' name='passwd' /><br>");
-            out.println("Email: <input type='email' name='email' /><br>");
-            out.println("<input type='submit' value='Register' name='action' />");
-            out.println("</form>");
             out.println("</body></html>");
         }
     }
@@ -53,17 +40,14 @@ public class UserServlet extends HttpServlet {
         String surname = request.getParameter("surname");
         String action = request.getParameter("action");
 
-        // 输出响应的打印对象
         try (PrintWriter out = response.getWriter()) {
-            // 处理没有传入 action 的情况
             if (action == null || action.trim().isEmpty()) {
                 showErrorMessage(out, "Acción no válida");
                 return;
             }
 
-            // 根据动作进行不同的操作
             switch (action) {
-                case "Login":
+                case "login":
                     handleLogin(request, response, out, username, passwd);
                     break;
                 case "Register":
@@ -76,9 +60,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // 登录处理逻辑
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws IOException {
-        // 校验用户名和密码
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws ServletException, IOException {
         if (username == null || passwd == null || username.trim().isEmpty() || passwd.trim().isEmpty()) {
             showErrorMessage(out, "Todos los campos son obligatorios para el inicio de sesión.");
             return;
@@ -88,9 +70,10 @@ public class UserServlet extends HttpServlet {
         boolean existe = usuarioService.validarUsuario(user);
 
         if (existe) {
-            out.println("<html><body><h1>Bienvenido, " + user.getUsername() + "!</h1></body></html>");
+            response.sendRedirect(request.getContextPath() + "/jsp/ejemplo.jsp");
         } else {
-            out.println("<html><body><h1>Usuario o contraseña incorrectos</h1></body></html>");
+            request.setAttribute("error", "login failed");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
         }
     }
 
