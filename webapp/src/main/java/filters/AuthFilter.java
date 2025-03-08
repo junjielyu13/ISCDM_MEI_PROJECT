@@ -9,5 +9,5 @@ package filters;
  * @author alumne
  */
 public class AuthFilter {
-    
+    // TODO
 }

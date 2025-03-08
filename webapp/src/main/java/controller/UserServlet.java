@@ -57,12 +57,12 @@ public class UserServlet extends HttpServlet {
         User user = new User(username, passwd);
         boolean existe = usuarioService.validarUsuario(user);
 
-        if (existe) {
+            if (existe) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(60 * 60);
         
-            response.sendRedirect(request.getContextPath() + "/jsp/ejemplo.jsp");
+            response.sendRedirect(request.getContextPath() + "/jsp/registroVid.jsp");
         } else {
             request.setAttribute("error", "login failed");
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
