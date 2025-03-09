@@ -57,7 +57,11 @@
 
             <!-- Submit Button -->
             <input type="submit" value="Registrar Video">
+            
         </form>
+        
+        <button onclick="location.href='listadoVid.jsp'">Ver Lista de Video</button>
+        
     </div>
 </body>
 </html>

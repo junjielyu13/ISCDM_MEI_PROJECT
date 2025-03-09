@@ -1,4 +1,3 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -52,50 +51,34 @@
         <thead>
             <tr>
                 <th>Identificador</th>
-                <th>TÃ­tulo</th>
+                <th>T�tulo</th>
                 <th>Autor</th>
-                <th>Fecha de CreaciÃ³n</th>
-                <th>DuraciÃ³n (min)</th>
+                <th>Fecha de Creaci�n</th>
+                <th>Duraci�n (min)</th>
                 <th>Reproducciones</th>
-                <th>DescripciÃ³n</th>
+                <th>Descripci�n</th>
                 <th>Formato</th>
             </tr>
         </thead>
-        <tbody>
-            <%
-                // Get the result set from the request attribute
-                ResultSet rs = (ResultSet) request.getAttribute("videoList");
-                try {
-                    // Iterate through the result set and display each video
-                    while (rs.next()) {
-                        String identificador = rs.getString("identificador");
-                        String titulo = rs.getString("titulo");
-                        String autor = rs.getString("autor");
-                        String fechaCreacion = rs.getString("fecha_creacion");
-                        int duracion = rs.getInt("duracion");
-                        int reproducciones = rs.getInt("numero_reproducciones");
-                        String descripcion = rs.getString("descripcion");
-                        String formato = rs.getString("formato");
-            %>
-                        <tr>
-                            <td><%= identificador %></td>
-                            <td><%= titulo %></td>
-                            <td><%= autor %></td>
-                            <td><%= fechaCreacion %></td>
-                            <td><%= duracion %></td>
-                            <td><%= reproducciones %></td>
-                            <td><%= descripcion %></td>
-                            <td><%= formato %></td>
-                        </tr>
-            <%
-                    }
-                } catch (SQLException e) {
-                    out.println("<p>Error al recuperar los videos: " + e.getMessage() + "</p>");
-                }
-            %>
+        <tbody id="videoTableBody">
+            <tr><td colspan="8" style="text-align:center;">Cargando videos...</td></tr>
         </tbody>
     </table>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("videoListServlet") 
+            .then(response => response.text()) 
+            .then(html => {
+                document.getElementById("videoTableBody").innerHTML = html;  
+            })
+            .catch(error => {
+                console.error("Error al cargar videos:", error);
+                document.getElementById("videoTableBody").innerHTML = "<tr><td colspan='8' style='text-align:center;color:red;'>Error al cargar videos</td></tr>";
+            });
+    });
+</script>
 
 </body>
 </html>
