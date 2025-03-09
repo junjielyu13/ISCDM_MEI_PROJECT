@@ -7,84 +7,85 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import model.User;
 import service.UserService;
 
-/**
- *
- * @author alumness
- */
 @WebServlet(name = "userServlet", urlPatterns = {"/jsp/userServlet"})
 public class UserServlet extends HttpServlet { 
 
     private final UserService usuarioService = new UserService();
-    
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {    
-                out.println("<html><body>Method not supported</body></html>");
-        }
-    }
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        String username = request.getParameter("username");
+        String passwd = request.getParameter("password");
+        String email = request.getParameter("email");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String action = request.getParameter("action");
+
         try (PrintWriter out = response.getWriter()) {
-            
-            String username = request.getParameter("user");
-            String passwd = request.getParameter("passwd");
-            
-            User user = new User(username, passwd);
-            boolean existe = usuarioService.validarUsuario(user);                        
-            
-            String result;
-            if (existe) {
-                result = "El usuario existe";
-                // response.getWriter().write("El usuario existe");
-            } else {
-                result = "El usuario no exist";
-                //response.getWriter().write("El usuario no existe");
+            if (action == null || action.trim().isEmpty()) {
+                return;
             }
-                    
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletEjemplo</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> " + result + " </h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+            switch (action) {
+                case "login":
+                    handleLogin(request, response, out, username, passwd);
+                    break;
+                case "Register":
+                    handleRegister(request, response, out, username, passwd, email, name, surname);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws ServletException, IOException {
+        if (username == null || passwd == null || username.trim().isEmpty() || passwd.trim().isEmpty()) {
+            request.setAttribute("error", "Todos los campos son obligatorios para el inicio de sesión.");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+            return;
+        }
 
+        User user = new User(username, passwd);
+        boolean existe = usuarioService.validarUsuario(user);
+
+        if (existe) {
+            User sessionUser = usuarioService.getUserByUsername(username);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", sessionUser);
+            session.setMaxInactiveInterval(60 * 60);
+        
+            response.sendRedirect(request.getContextPath() + "/jsp/registroVid.jsp");
+        } else {
+            request.setAttribute("error", "login failed");
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+        }
+    }
+
+    private void handleRegister(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
+        if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
+            request.setAttribute("error", "Register Todos los campos son obligatorios para el registro.");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+            return;
+        }
+        User newUser = new User(username, passwd, email, name, surname);
+        boolean registrado = usuarioService.registrarUsuario(newUser);
+
+        if (registrado) {
+            request.setAttribute("success", "Usuario registrado correctamente. Por favor, <a href='login.jsp'>inicie sesión</a>.");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+        } else {
+            request.setAttribute("error", "Error al registrar el usuario, el usuario ha registrado");
+            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+        }
+    }
 }
+        
