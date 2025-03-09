@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import model.User;
 import model.Video;
@@ -99,7 +100,7 @@ public class VideoRegistrationServlet extends HttpServlet {
                 0, // 默认 0 次观看
                 videoDuration, 
                 fileExtension,
-                null
+                LocalDateTime.now()
         );
 
         // 通过 Service 保存到数据库
