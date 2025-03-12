@@ -33,7 +33,7 @@ public class VideoRegistrationServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             request.setAttribute("error", "User not logged in or does not exist.");
-            request.getRequestDispatcher("/jsp/registroVid.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
@@ -45,7 +45,7 @@ public class VideoRegistrationServlet extends HttpServlet {
 
         if (fileName == null || fileName.isEmpty()) {
             request.setAttribute("error", "Please select a video file to upload.");
-            request.getRequestDispatcher("/jsp/registroVid.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
@@ -72,7 +72,7 @@ public class VideoRegistrationServlet extends HttpServlet {
         } catch (IOException ioEx) {
             ioEx.printStackTrace();
             request.setAttribute("error", "Failed to save the video. Please try again.");
-            request.getRequestDispatcher("/jsp/registroVid.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
@@ -97,7 +97,7 @@ public class VideoRegistrationServlet extends HttpServlet {
         } else {
             request.setAttribute("error", "Video registration failed. Please try again.");
         }
-        request.getRequestDispatcher("/jsp/registroVid.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
     }
 
     public int getMp4Duration(String videoFilePath) {

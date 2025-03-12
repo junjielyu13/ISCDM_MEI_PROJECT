@@ -60,7 +60,7 @@ public class UserServlet extends HttpServlet {
             session.setAttribute("user", sessionUser);
             session.setMaxInactiveInterval(60 * 60);
         
-            response.sendRedirect(request.getContextPath() + "/jsp/registroVid.jsp");
+            response.sendRedirect(request.getContextPath() + "/jsp/registrationVideo.jsp");
         } else {
             request.setAttribute("error", "Login failed");
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
@@ -70,7 +70,7 @@ public class UserServlet extends HttpServlet {
     private void handleRegister(HttpServletRequest request, HttpServletResponse response, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
         if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
             request.setAttribute("error", "All fields are required for registration.");
-            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationUser.jsp").forward(request, response);
             return;
         }
         User newUser = new User(username, passwd, email, name, surname);
@@ -78,10 +78,10 @@ public class UserServlet extends HttpServlet {
 
         if (registrado) { 
             request.setAttribute("success", "User registered successfully. Please, <a href='login.jsp'>log in</a>.");
-            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationUser.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Error registering the user, the user has already been registered.");
-            request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/registrationUser.jsp").forward(request, response);
         }
     }
 }

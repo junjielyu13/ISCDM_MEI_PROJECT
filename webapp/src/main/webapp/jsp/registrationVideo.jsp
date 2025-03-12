@@ -54,7 +54,7 @@
         </form>
         
         <div class="register-btn">
-            <a href="listadoVid.jsp" class="btn">View Video List</a>
+            <a href="listVideo.jsp" class="btn">View Video List</a>
         </div>
         
     </div>
