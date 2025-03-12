@@ -29,7 +29,7 @@
     </form>
 
     <div class="register-btn">
-        <a href="registroUsu.jsp" class="btn">Register</a>
+        <a href="registrationUser.jsp" class="btn">Register</a>
     </div>
 
 </div>
