@@ -9,7 +9,7 @@
 <body>
 
 <div class="container-list-video">
-    <h2>Listado de Videos Registrados</h2>
+    <h2>List of Registered Videos</h2>
 
     <table>
         <thead>
