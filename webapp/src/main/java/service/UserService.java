@@ -8,30 +8,34 @@ public class UserService {
 
     private final UserDAO userDao = new UserDAO();
 
-    public boolean validarUsuario(User user) {
-        return userDao.findByUsername(user.getUsername()) != null;
+    public boolean validUser(User user) {
+        return userDao.validUser(user) != null;
     }
     
     public User getUserByUsername(String username) {
         return userDao.findByUsername(username);
     }
+    
+    public User getUserByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
 
-    public boolean registrarUsuario(User user) {
-        if (userDao.findByUsername(user.getUsername()) != null) {
+    public boolean registerUser(User user) {
+        if (userDao.findByEmail(user.getEmail()) != null) {
             return false; 
         }
         return userDao.save(user);
     }
 
-    public List<User> obtenerTodosUsuarios() {
+    public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-    public boolean actualizarContraseña(String username, String newPassword) {
+    public boolean updatePassword(String username, String newPassword) {
         return userDao.updatePassword(username, newPassword);
     }
 
-    public boolean eliminarUsuario(String username) {
+    public boolean deleteUser(String username) {
         return userDao.deleteUser(username);
     }
 }

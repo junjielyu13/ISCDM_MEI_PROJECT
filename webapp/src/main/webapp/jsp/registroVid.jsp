@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Video</title>
-    <link rel="stylesheet" href="../assets/index_1.css">
+    <title>Video Registration</title>
+    <link rel="stylesheet" href="../assets/index.css">
 </head>
 <body>
 
@@ -20,47 +20,42 @@
                 User user = (User) sessionObj.getAttribute("user");
                 if (Objects.nonNull(user)) {
             %>
-                <p>Bienvenido, <%= user.getUsername() %>!</p>
+                <p>Welcome, <%= user.getUsername() %>!</p>
             <% } else { %>
-                <p>No ha iniciado sesión.</p>
+                <p>Not logged in, please, <a href='login.jsp'>log in</a>.</p>
             <% } %>
         </div>
         
-        <h2>Registrar Video</h2>
+        <h2>Register Video</h2>
 
-        <!-- Display error message if it exists -->
         <c:if test="${not empty error}">
             <p class="error">${error}</p>
         </c:if>
 
-        <!-- Display success message if it exists -->
         <c:if test="${not empty success}">
             <p class="success">${success}</p>
         </c:if>
 
  
-        <!-- Updated Form to Support Video Upload -->
         <form id="videoForm" action="videoRegistrationServlet" method="post" enctype="multipart/form-data">
-            <!-- Identificador -->
 
-            <!-- Título -->
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
+            <label for="titulo">Title:</label>
+            <input type="text" id="title" name="title" required>
 
-            <!-- Descripción -->
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            
+            <label for="descripcion">Description:</label>
+            <textarea id="descripcion" name="description" rows="4" required></textarea>
 
-            <!-- Video File Upload -->
-            <label for="video">Seleccionar Video:</label>
+            <label for="video">Select Video:</label>
             <input type="file" id="video" name="video" accept="video/*" required>
 
-            <!-- Submit Button -->
-            <input type="submit" value="Registrar Video">
+            <input type="submit" value="Register Video">
             
         </form>
         
-        <button onclick="location.href='listadoVid.jsp'">Ver Lista de Video</button>
+        <div class="register-btn">
+            <a href="listadoVid.jsp" class="btn">View Video List</a>
+        </div>
         
     </div>
 </body>

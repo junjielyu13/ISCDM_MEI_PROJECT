@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +14,7 @@ import service.UserService;
 @WebServlet(name = "userServlet", urlPatterns = {"/jsp/userServlet"})
 public class UserServlet extends HttpServlet { 
 
-    private final UserService usuarioService = new UserService();
+    private final UserService userService = new UserService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -29,61 +28,59 @@ public class UserServlet extends HttpServlet {
         String surname = request.getParameter("surname");
         String action = request.getParameter("action");
 
-        try (PrintWriter out = response.getWriter()) {
-            if (action == null || action.trim().isEmpty()) {
-                return;
-            }
-
-            switch (action) {
-                case "login":
-                    handleLogin(request, response, out, username, passwd);
-                    break;
-                case "Register":
-                    handleRegister(request, response, out, username, passwd, email, name, surname);
-                    break;
-                default:
-                    break;
-            }
+        if (action == null || action.trim().isEmpty()) {
+            return;
         }
+
+        switch (action) {
+            case "login":
+                handleLogin(request, response, email, passwd);
+                break;
+            case "Register":
+                handleRegister(request, response, username, passwd, email, name, surname);
+                break;
+            default:
+                break;
+        }   
     }
 
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd) throws ServletException, IOException {
-        if (username == null || passwd == null || username.trim().isEmpty() || passwd.trim().isEmpty()) {
-            request.setAttribute("error", "Todos los campos son obligatorios para el inicio de sesión.");
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response, String email, String passwd) throws ServletException, IOException {
+        if (email == null || passwd == null || email.trim().isEmpty() || passwd.trim().isEmpty()) {
+            request.setAttribute("error", "All fields are required for login.");
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
             return;
         }
 
-        User user = new User(username, passwd);
-        boolean existe = usuarioService.validarUsuario(user);
+        User user = new User(email, passwd);
+        boolean existe = userService.validUser(user);
 
         if (existe) {
-            User sessionUser = usuarioService.getUserByUsername(username);
+            User sessionUser = userService.getUserByEmail(email);
             HttpSession session = request.getSession();
             session.setAttribute("user", sessionUser);
             session.setMaxInactiveInterval(60 * 60);
         
             response.sendRedirect(request.getContextPath() + "/jsp/registroVid.jsp");
         } else {
-            request.setAttribute("error", "login failed");
+            request.setAttribute("error", "Login failed");
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
         }
     }
 
-    private void handleRegister(HttpServletRequest request, HttpServletResponse response, PrintWriter out, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
+    private void handleRegister(HttpServletRequest request, HttpServletResponse response, String username, String passwd, String email, String name, String surname) throws ServletException, IOException {
         if (username == null || username.trim().isEmpty() || passwd == null || passwd.trim().isEmpty() || email == null || email.trim().isEmpty()) {
-            request.setAttribute("error", "Register Todos los campos son obligatorios para el registro.");
+            request.setAttribute("error", "All fields are required for registration.");
             request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
             return;
         }
         User newUser = new User(username, passwd, email, name, surname);
-        boolean registrado = usuarioService.registrarUsuario(newUser);
+        boolean registrado = userService.registerUser(newUser);
 
-        if (registrado) {
-            request.setAttribute("success", "Usuario registrado correctamente. Por favor, <a href='login.jsp'>inicie sesión</a>.");
+        if (registrado) { 
+            request.setAttribute("success", "User registered successfully. Please, <a href='login.jsp'>log in</a>.");
             request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
         } else {
-            request.setAttribute("error", "Error al registrar el usuario, el usuario ha registrado");
+            request.setAttribute("error", "Error registering the user, the user has already been registered.");
             request.getRequestDispatcher("/jsp/registroUsu.jsp").forward(request, response);
         }
     }

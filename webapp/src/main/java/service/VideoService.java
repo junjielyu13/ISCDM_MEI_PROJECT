@@ -9,31 +9,26 @@ public class VideoService {
 
     private final VideoDAO videoDao = new VideoDAO();
 
-    // Validate if a video with the same URL already exists
-    public boolean validarVideo(Video video) {
+    public boolean validVideo(Video video) {
         return videoDao.findById(video.getId()) != null;
     }
 
-    // Register a new video
-    public boolean registrarVideo(Video video) {
+    public boolean registerVideo(Video video) {
         if (videoDao.findById(video.getId()) != null) {
-            return false; // Video already exists
+            return false; 
         }
         return videoDao.save(video);
     }
 
-    // Get all videos
-    public List<Video> obtenerTodosVideos() {
+    public List<Video> getAllVideo() {
         return videoDao.getAllVideos();
     }
 
-    // Update video details
-    public boolean actualizarVideo(Video video) {
+    public boolean updateVideo(Video video) {
         return videoDao.update(video);
     }
 
-    // Delete a video by its ID
-    public boolean eliminarVideo(int id) {
+    public boolean deleteVideo(int id) {
         return videoDao.delete(id);
     }
 }

@@ -8,6 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
+    
+        public User validUser(User user) {
+        String sql = "SELECT * FROM USERS WHERE email = ? and password = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getEmail());
+            stmt.setString(2, user.getPassword());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(rs.getString("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("email"),
+                                rs.getString("name"),
+                                rs.getString("surname"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; 
+    }
 
     public User findByUsername(String username) {
         String sql = "SELECT * FROM USERS WHERE username = ?";
@@ -15,6 +38,28 @@ public class UserDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new User(rs.getString("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("email"),
+                                rs.getString("name"),
+                                rs.getString("surname"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; 
+    }
+    
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM USERS WHERE email = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

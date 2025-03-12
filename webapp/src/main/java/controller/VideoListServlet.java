@@ -18,14 +18,11 @@ public class VideoListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 获取所有视频
-        List<Video> videoList = videoService.obtenerTodosVideos();
+        List<Video> videoList = videoService.getAllVideo();
 
-        // 设置响应内容类型
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
-        // 构建 HTML 片段
         StringBuilder tableRows = new StringBuilder();
         if (videoList != null && !videoList.isEmpty()) {
             for (Video video : videoList) {
@@ -41,10 +38,10 @@ public class VideoListServlet extends HttpServlet {
                          .append("</tr>");
             }
         } else {
-            tableRows.append("<tr><td colspan='8' style='text-align:center;'>No hay videos registrados</td></tr>");
+            tableRows.append("<tr><td colspan='8' style='text-align:center;'>There are no videos registered</td></tr>");
         }
 
-        // 发送 HTML 片段
         response.getWriter().write(tableRows.toString());
     }
+   
 }
