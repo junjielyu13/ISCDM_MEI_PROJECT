@@ -18,7 +18,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Creation Date</th>
-                <th>Duration (min)</th>
+                <th>Duration (segons)</th>
                 <th>Views</th>
                 <th>Description</th>
                 <th>Format</th>
