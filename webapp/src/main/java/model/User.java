@@ -10,14 +10,14 @@ public class User {
 
     public User() {}
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String surname, String email) {
         this.username = username;
-        this.password = password;
+        this.surname = surname;
         this.email = email;
     }
 
