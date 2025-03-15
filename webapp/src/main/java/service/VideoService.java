@@ -14,9 +14,6 @@ public class VideoService {
     }
 
     public boolean registerVideo(Video video) {
-        if (videoDao.findById(video.getId()) != null) {
-            return false; 
-        }
         return videoDao.save(video);
     }
 

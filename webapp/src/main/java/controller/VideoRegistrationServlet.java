@@ -7,7 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import model.User;
@@ -23,34 +27,67 @@ import service.VideoService;
 public class VideoRegistrationServlet extends HttpServlet {
 
     private final VideoService videoService = new VideoService();
-    private static final String UPLOAD_DIR = "/home/alumne/ISCDM_MEI_PROJECT/webapp/uploads/videos/";
+    private static String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/uploads/videos/";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            forwardWithError(request, response, "User not logged in or does not exist.");
+            request.setAttribute("error", "User not logged in or does not exist.");
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         Part videoPart = request.getPart("video");
+        String fileName = videoPart.getSubmittedFileName();
 
-        if (videoPart == null || videoPart.getSubmittedFileName().isEmpty()) {
-            forwardWithError(request, response, "Please select a video file to upload.");
+        if (fileName == null || fileName.isEmpty()) {
+            request.setAttribute("error", "Please select a video file to upload.");
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
-        String filePath = saveVideoFile(videoPart);
-        if (filePath == null) {
-            forwardWithError(request, response, "Failed to save the video. Please try again.");
+        String fileExtension = fileName.substring(fileName.lastIndexOf("."));
+        String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+
+        File uploadDirFolder = new File(uploadDir);
+        if (!uploadDirFolder.exists()) {
+            uploadDirFolder.mkdirs();
+        }
+
+        File uploadedFile = new File(uploadDirFolder, uniqueFileName);
+        String absoluteFilePath = uploadedFile.getAbsolutePath();
+
+        try (InputStream inputStream = videoPart.getInputStream();
+             FileOutputStream fos = new FileOutputStream(uploadedFile)) {
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException ioEx) {
+            ioEx.printStackTrace();
+            request.setAttribute("error", "Failed to save the video. Please try again.");
+            request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
             return;
         }
 
-        int videoDuration = getMp4Duration(filePath);
-        Video video = new Video(title, description, filePath, user.getIdUser(), 0, videoDuration, getFileExtension(filePath), LocalDateTime.now());
-        
+        Video video = new Video(
+                0, 
+                title,
+                description,
+                "/uploads/videos/" + uniqueFileName, 
+                user.getIdUser(),
+                0, 
+                getMp4Duration(absoluteFilePath), 
+                fileExtension,
+                LocalDateTime.now()
+        );
+
         if (videoService.registerVideo(video)) {
             request.setAttribute("success", "Video uploaded and registered successfully!");
         } else {
@@ -59,39 +96,7 @@ public class VideoRegistrationServlet extends HttpServlet {
         request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
     }
 
-    private void forwardWithError(HttpServletRequest request, HttpServletResponse response, String errorMessage) throws ServletException, IOException {
-        request.setAttribute("error", errorMessage);
-        request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
-    }
-
-    private String saveVideoFile(Part videoPart) {
-        try {
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            String fileName = UUID.randomUUID() + getFileExtension(videoPart.getSubmittedFileName());
-            File uploadedFile = new File(uploadDir, fileName);
-            try (InputStream inputStream = videoPart.getInputStream(); FileOutputStream fos = new FileOutputStream(uploadedFile)) {
-                byte[] buffer = new byte[8192];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    fos.write(buffer, 0, bytesRead);
-                }
-            }
-            return "/uploads/videos/" + fileName;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String getFileExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
-
-    private int getMp4Duration(String videoFilePath) {
+    public int getMp4Duration(String videoFilePath) {
         try (RandomAccessFile file = new RandomAccessFile(videoFilePath, "r")) {
             long fileLength = file.length();
             long pos = 0;
@@ -112,10 +117,10 @@ public class VideoRegistrationServlet extends HttpServlet {
                         String boxType = new String(boxTypeBytes);
 
                         if ("mvhd".equals(boxType)) {
-                            file.skipBytes(12);
-                            int timescale = file.readInt();
-                            int duration = file.readInt();
-                            return duration / timescale;
+                            file.skipBytes(12); 
+                            int timescale = file.readInt(); 
+                            int duration = file.readInt();  
+                            return duration / timescale;  
                         }
                         file.skipBytes(boxSize - 8);
                     }

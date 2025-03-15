@@ -44,7 +44,7 @@ public class VideoDAO {
             stmt.setString(1, video.getTitle());
             stmt.setString(2, video.getDescription());
             stmt.setString(3, video.getUrl());
-            stmt.setInt(4, video.getUserId());
+            stmt.setInt(4,video.getUserId());
             stmt.setInt(5, video.getViews());
             stmt.setInt(6, video.getDuration());
             stmt.setString(7, video.getFormat());

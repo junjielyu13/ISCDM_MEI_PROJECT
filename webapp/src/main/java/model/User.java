@@ -20,6 +20,13 @@ public class User {
         this.surname = surname;
         this.email = email;
     }
+    
+    public User(String id, String username, String surname, String email) {
+        this.idUser = Integer.parseInt(id);
+        this.username = username;
+        this.surname = surname;
+        this.email = email;
+    }
 
     public User(String username, String password, String email, String name, String surname) {
         this.username = username;
