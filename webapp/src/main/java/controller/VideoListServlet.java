@@ -5,13 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 import model.Video;
 import model.User;
 import service.UserService;
 import service.VideoService;
-
-import java.io.IOException;
-import java.util.List;
+import util.DateTimeUtil;
 
 
 @WebServlet(name = "videoListServlet", urlPatterns = {"/jsp/videoListServlet"})
@@ -40,12 +40,13 @@ public class VideoListServlet extends HttpServlet {
         
         for (Video video : videoList) {
             User user = userService.getUserByID(String.valueOf(video.getUserId()));
+            String createDate = DateTimeUtil.formatIsoToLocal(video.getUploadedAt().toString());
             if (user != null) {
                 tableRows.append("<tr>")
                          .append("<td>").append(video.getId()).append("</td>")
                          .append("<td>").append(video.getTitle()).append("</td>")
                          .append("<td>").append(user.getUsername()).append("</td>")
-                         .append("<td>").append(video.getUploadedAt()).append("</td>")
+                         .append("<td>").append(createDate).append("</td>")
                          .append("<td>").append(video.getDuration()).append("</td>")
                          .append("<td>").append(video.getViews()).append("</td>")
                          .append("<td>").append(video.getDescription()).append("</td>")
