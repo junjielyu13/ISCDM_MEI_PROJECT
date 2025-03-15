@@ -41,7 +41,13 @@
             <input type="password" id="confirm_password" name="confirm_password" required />
  
             <button type="submit" class="btn">Register</button>
+            
+
         </form> 
+        
+        <div class="register-btn">
+            <a href="login.jsp" class="btn">Back to Login</a>
+        </div>
 
     </div>
 

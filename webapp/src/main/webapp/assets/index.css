@@ -14,6 +14,11 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.user-info p {
+    margin: 0;
+    display: inline-block;
+}
+
 h2 {
     text-align: center;
 }
@@ -111,8 +116,11 @@ input[type="text"], input[type="email"], input[type="password"] {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.container-list-video h2 {
-    text-align: center;
+.listvideo-title-box{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .container-list-video table {
@@ -139,6 +147,25 @@ input[type="text"], input[type="email"], input[type="password"] {
 
 .container-list-video table tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+.container-list-video-add-btn{
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-list-video-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container-404 {
@@ -169,3 +196,4 @@ input[type="text"], input[type="email"], input[type="password"] {
 .container-404 > .btn:hover {
     background-color: #0056b3;
 }
+

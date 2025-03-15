@@ -1,3 +1,7 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="jakarta.servlet.http.HttpSession" %>
+<%@page import="java.util.Objects" %>
+<%@page import="model.User" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +13,26 @@
 <body>
 
 <div class="container-list-video">
-    <h2>List of Registered Videos</h2>
+    <div style="display: flex;
+         justify-content: space-between;
+         align-items: center;
+         flex-wrap: nowrap;">
+        <div class="user-info">
+            <% 
+                HttpSession sessionObj = request.getSession();
+                User user = (User) sessionObj.getAttribute("user");
+                if (Objects.nonNull(user)) {
+            %>
+                <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
+            <% } else { %>
+                <p>Not logged in, please, <a href='login.jsp'>log in</a>.</p>
+            <% } %>
+        </div>
+        <div><h2>List of Registered Videos</h2></div>
+        <div>
+            <button class="container-list-video-add-btn btn" onclick="location.href='registrationVideo.jsp'">Add Video</button>
+        </div>
+    </div>
 
     <table>
         <thead>

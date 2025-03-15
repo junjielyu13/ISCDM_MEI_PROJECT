@@ -1,4 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="jakarta.servlet.http.HttpSession" %>
+<%@page import="java.util.Objects" %>
+<%@page import="model.User" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,6 +13,11 @@
 <body>
 
 <div class="container">
+    <%
+        HttpSession sessionObj = request.getSession();
+        sessionObj.removeAttribute("user");
+    %>
+
     <h2>Login</h2>
     
     <c:if test="${not empty error}">

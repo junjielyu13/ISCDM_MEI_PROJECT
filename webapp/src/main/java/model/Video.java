@@ -26,6 +26,17 @@ public class Video {
         this.format = format;
         this.uploadedAt = uploadedAt;
     }
+    
+    public Video(String title, String description, String url, int userId, int views, int duration, String format, LocalDateTime uploadedAt) {    
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.userId = userId;
+        this.views = views;
+        this.duration = duration;
+        this.format = format;
+        this.uploadedAt = uploadedAt;
+    }
 
     // Getters and Setters
     public int getId() {

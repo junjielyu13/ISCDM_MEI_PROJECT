@@ -20,7 +20,7 @@
                 User user = (User) sessionObj.getAttribute("user");
                 if (Objects.nonNull(user)) {
             %>
-                <p>Welcome, <%= user.getUsername() %>!</p>
+                <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
             <% } else { %>
                 <p>Not logged in, please, <a href='login.jsp'>log in</a>.</p>
             <% } %>
