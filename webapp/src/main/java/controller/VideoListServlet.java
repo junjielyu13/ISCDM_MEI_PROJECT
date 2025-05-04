@@ -51,6 +51,11 @@ public class VideoListServlet extends HttpServlet {
                          .append("<td>").append(video.getViews()).append("</td>")
                          .append("<td>").append(video.getDescription()).append("</td>")
                          .append("<td>").append(video.getFormat()).append("</td>")
+                         .append("<td>")
+                            .append("<button onclick=\"playVideo(").append(video.getId()).append(")\">Play</button> ")
+                            .append("<button onclick=\"editVideo(").append(video.getId()).append(")\">Edit</button> ")
+                            .append("<button onclick=\"deleteVideo(").append(video.getId()).append(")\">Delete</button>")
+                         .append("</td>")
                          .append("</tr>");
             }
         }

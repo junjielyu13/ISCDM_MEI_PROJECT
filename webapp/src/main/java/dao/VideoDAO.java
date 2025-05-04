@@ -112,7 +112,7 @@ public class VideoDAO {
 
     // Delete a video by its ID
     public boolean delete(int id) {
-        String sql = "DELETE FROM VIDEOS WHERE id = ?";
+        String sql = "DELETE FROM VIDEOS WHERE ID = ?";
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

@@ -45,6 +45,7 @@
                 <th>Views</th>
                 <th>Description</th>
                 <th>Format</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id="videoTableBody">
@@ -65,6 +66,29 @@
                 document.getElementById("videoTableBody").innerHTML = "<tr><td colspan='8' style='text-align:center;color:red;'>Error al cargar videos</td></tr>";
             });
     });
+    
+    function playVideo(id) {
+        window.location.href = "playVideo.jsp?id="+id;
+    }
+
+    function editVideo(id) {
+        window.location.href = "editVideo.jsp?id="+id;
+    }
+
+    function deleteVideo(id) {
+        if (confirm("Are you sure you want to delete this video?")) {
+                fetch("deleteVideoServlet?id=" + id, {
+                    method: 'GET'
+                })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Failed to delete video");
+                }
+            });
+        }
+    }
 </script>
 
 </body>

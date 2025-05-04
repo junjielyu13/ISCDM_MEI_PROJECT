@@ -18,7 +18,7 @@ import java.util.UUID;
 public class VideoService {
 
     private final VideoDAO videoDao = new VideoDAO();
-    private static String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/uploads/videos/";
+    private static String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/src/main/webapp/uploads/videos/";
 
 
     public boolean validVideo(Video video) {

@@ -54,6 +54,7 @@ public class Video {
     public void setTitle(String title) {
         this.title = title;
     }
+   
 
     public String getDescription() {
         return description;
@@ -110,4 +111,5 @@ public class Video {
     public void setUploadedAt(LocalDateTime uploadedAt) {
         this.uploadedAt = uploadedAt;
     }
+
 }
