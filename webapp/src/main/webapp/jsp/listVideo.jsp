@@ -68,7 +68,7 @@
     });
     
     function playVideo(id) {
-        window.location.href = "playVideo.jsp?id="+id;
+        window.location.href = "reproduction.jsp?id="+id;
     }
 
     function editVideo(id) {
