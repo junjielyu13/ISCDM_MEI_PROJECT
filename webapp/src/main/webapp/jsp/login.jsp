@@ -39,7 +39,7 @@
     <div class="register-btn">
         <a href="registrationUser.jsp" class="btn">Register</a>
     </div>
-
+    
 </div>
 
 </body>

@@ -30,7 +30,7 @@
 <body>
     <div class="container">
         <h2>Edit Video</h2>
-        <form action="updateVideoServlet" method="post">
+        <form id="updateForm">
             <input type="hidden" name="id" value="<%= video.getId() %>"/>
             <label>Title:</label>
             <input type="text" name="title" value="<%= video.getTitle() %>" required /><br/>
@@ -43,4 +43,31 @@
         </form>
     </div>
 </body>
+
+<script>
+document.getElementById('updateForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const data = new URLSearchParams();
+    for (const pair of formData) {
+        data.append(pair[0], pair[1]);
+    }
+
+    const response = await fetch('updateVideoServlet', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data
+    });
+
+    if (response.ok) {
+        window.location.href = 'listVideo.jsp';
+    } else {
+        alert('Error updating video');
+    }
+});
+</script>
+
 </html>

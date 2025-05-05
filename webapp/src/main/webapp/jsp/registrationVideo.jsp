@@ -57,6 +57,10 @@
             <a href="listVideo.jsp" class="btn">View Video List</a>
         </div>
         
+        <div class="register-btn">
+            <a href="search.jsp" class="btn">Search</a>
+        </div>
+        
     </div>
 </body>
 </html>
