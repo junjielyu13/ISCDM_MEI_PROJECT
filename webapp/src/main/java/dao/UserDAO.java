@@ -163,4 +163,26 @@ public class UserDAO {
         }
         return false; 
     }
+    
+    public List<User> searchUsersByName(String name) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE username LIKE ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + name + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    User user = new User(rs.getString("id"),
+                                         rs.getString("username"),
+                                         rs.getString("surname"),
+                                         rs.getString("email"));
+                    users.add(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
 }

@@ -124,4 +124,97 @@ public class VideoDAO {
         }
         return false; // Return false if delete fails
     }
+    
+    // Get all videos
+    public List<Video> getVideosByTitle(String title) {
+        List<Video> videos = new ArrayList<>();
+        String sql = "SELECT * FROM VIDEOS WHERE TITLE LIKE ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + title + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Video video = new Video(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getString("url"),
+                            rs.getInt("user_id"),
+                            rs.getInt("views"),
+                            rs.getInt("duration"),
+                            rs.getString("format"),
+                            rs.getTimestamp("uploaded_at").toLocalDateTime()
+                    );
+                    videos.add(video);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
+}
+
+    
+    public List<Video> getVideosByUserId(int id) {
+        List<Video> videos = new ArrayList<>();
+        String sql = "SELECT * FROM VIDEOS WHERE USER_ID = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id); 
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Video video = new Video(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getString("url"),
+                            rs.getInt("user_id"),
+                            rs.getInt("views"),
+                            rs.getInt("duration"),
+                            rs.getString("format"),
+                            rs.getTimestamp("uploaded_at").toLocalDateTime()
+                    );
+                    videos.add(video);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos;
+    }
+    
+public List<Video> getVideosByDate(String dateStr) {
+    List<Video> videos = new ArrayList<>();
+    String sql = "SELECT * FROM VIDEOS WHERE DATE(UPLOADED_AT) = ?";
+    try (Connection conn = DatabaseConfig.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setDate(1, java.sql.Date.valueOf(dateStr)); // 正确设置日期参数
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Video video = new Video(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("url"),
+                        rs.getInt("user_id"),
+                        rs.getInt("views"),
+                        rs.getInt("duration"),
+                        rs.getString("format"),
+                        rs.getTimestamp("uploaded_at").toLocalDateTime()
+                );
+                videos.add(video);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return videos;
+}
+
 }

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import service.VideoService;
 
+import model.Video;
+
 @WebServlet(name = "deleteVideoServlet", urlPatterns = {"/jsp/deleteVideoServlet"})
 public class DeleteVideoServlet  extends HttpServlet {
 
