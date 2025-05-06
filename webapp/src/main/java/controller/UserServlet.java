@@ -60,7 +60,7 @@ public class UserServlet extends HttpServlet {
             session.setAttribute("user", sessionUser);
             session.setMaxInactiveInterval(60 * 60);
         
-            response.sendRedirect(request.getContextPath() + "/jsp/registrationVideo.jsp");
+            response.sendRedirect(request.getContextPath() + "/jsp/listVideo.jsp");
         } else {
             request.setAttribute("error", "Login failed");
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);

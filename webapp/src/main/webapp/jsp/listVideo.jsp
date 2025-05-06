@@ -18,17 +18,22 @@
          align-items: center;
          flex-wrap: nowrap;">
         <div class="user-info">
-            <% 
+            <%
                 HttpSession sessionObj = request.getSession();
                 User user = (User) sessionObj.getAttribute("user");
-                if (Objects.nonNull(user)) {
+                if (Objects.isNull(user)) {
+                    response.sendRedirect("privacy.jsp");
+                    return;
+                }
             %>
-                <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
-            <% } else { %>
-                <p>Not logged in, please, <a href='login.jsp'>log in</a>.</p>
-            <% } %>
+            <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
         </div>
         <div><h2>List of Registered Videos</h2></div>
+        
+        <div>
+            <button class="container-list-video-add-btn btn" onclick="location.href='search.jsp'">Search Video</button>
+        </div>
+        
         <div>
             <button class="container-list-video-add-btn btn" onclick="location.href='registrationVideo.jsp'">Add Video</button>
         </div>

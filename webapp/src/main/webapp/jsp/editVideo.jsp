@@ -2,6 +2,9 @@
 <%@page import="model.Video" %>
 <%@page import="dao.VideoDAO" %>
 <%@page import="java.util.Optional" %>
+<%@page import="jakarta.servlet.http.HttpSession" %>
+<%@page import="java.util.Objects" %>
+<%@page import="model.User" %>
 <%
     String idParam = request.getParameter("id");
     int id = -1;
@@ -29,6 +32,19 @@
 </head>
 <body>
     <div class="container">
+        
+        <div class="user-info">
+            <%
+                HttpSession sessionObj = request.getSession();
+                User user = (User) sessionObj.getAttribute("user");
+                if (Objects.isNull(user)) {
+                    response.sendRedirect("privacy.jsp");
+                    return;
+                }
+            %>
+            <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
+        </div>
+        
         <h2>Edit Video</h2>
         <form id="updateForm">
             <input type="hidden" name="id" value="<%= video.getId() %>"/>

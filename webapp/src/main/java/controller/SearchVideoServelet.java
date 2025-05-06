@@ -17,14 +17,12 @@ import java.util.List;
 import model.User;
 import model.Video;
 import service.UserService;
-import service.VideoService;
 import util.DateTimeUtil;
 
 
 @WebServlet(name = "searchVideoServlet", urlPatterns = {"/jsp/searchVideoServlet"})
 public class SearchVideoServelet extends HttpServlet {
 
-     private final VideoService videoService = new VideoService();
     private final UserService userService = new UserService();
     
     @Override
@@ -48,19 +46,16 @@ public class SearchVideoServelet extends HttpServlet {
                 }
                 break;
             case "titulo":
-                 videoList = dao.getVideosByTitle(valorBusqueda);
+                videoList = dao.getVideosByTitle(valorBusqueda);
                 break;
             case "fecha":
-                                 videoList = dao.getVideosByDate(valorBusqueda);
-
+                videoList = dao.getVideosByDate(valorBusqueda);
                 break;
             default:
                 break;
         }
-        
+   
         String tableRows = generateTableRows(videoList);
-        // Respond with the table rows as an HTML fragment
-        //response.setContentType("text/html");
         response.getWriter().write(tableRows);
     }
     
