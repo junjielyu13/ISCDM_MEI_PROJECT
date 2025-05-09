@@ -31,11 +31,11 @@
         <div><h2>List of Registered Videos</h2></div>
         
         <div>
-            <button class="container-list-video-add-btn btn" onclick="location.href='search.jsp'">Search Video</button>
+            <button class="btn" onclick="location.href='search.jsp'">Search Video</button>
         </div>
         
         <div>
-            <button class="container-list-video-add-btn btn" onclick="location.href='registrationVideo.jsp'">Add Video</button>
+            <button class="btn" onclick="location.href='registrationVideo.jsp'">Add Video</button>
         </div>
     </div>
 
