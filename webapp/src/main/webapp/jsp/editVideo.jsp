@@ -54,7 +54,7 @@
             <label>Description:</label>
             <textarea name="description" required><%= video.getDescription() %></textarea><br/>
 
-            <button type="submit">Save Changes</button>
+            <button type="submit" class="btn">Save Changes</button>
             <a href="listVideo.jsp">Cancel</a>
         </form>
     </div>
