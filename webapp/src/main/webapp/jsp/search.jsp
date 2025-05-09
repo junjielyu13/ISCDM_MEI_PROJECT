@@ -36,7 +36,7 @@
         <input type="text" name="valorBusqueda" id="textInput" placeholder="Escriba su búsqueda" >
         <input type="date" name="valorBusqueda" id="dateInput" style="display:none;" >
 
-        <input type="submit" value="Buscar">
+        <input type="submit" class="btn" value="Buscar">
     </form>
 
     <table>
