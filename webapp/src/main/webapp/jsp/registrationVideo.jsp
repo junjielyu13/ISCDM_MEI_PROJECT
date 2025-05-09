@@ -49,7 +49,7 @@
             <label for="video">Select Video:</label>
             <input type="file" id="video" name="video" accept="video/*" required>
 
-            <input type="submit" value="Register Video">
+            <input type="submit" class="btn" value="Register Video">
             
         </form>
         
