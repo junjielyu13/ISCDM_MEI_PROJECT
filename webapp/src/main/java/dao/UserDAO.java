@@ -46,7 +46,8 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new User(rs.getString("username"),
+                return new User(    rs.getString("id"),
+                                rs.getString("username"),
                                  rs.getString("surname"),
                                   rs.getString("email"));
             }

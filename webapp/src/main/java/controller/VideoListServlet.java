@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import model.Video;
@@ -27,13 +28,18 @@ public class VideoListServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         
-        String tableRows = generateTableRows(videoList);
+        HttpSession sessionObj = request.getSession();
+        User userActual = (User) sessionObj.getAttribute("user");
+        
+        String tableRows = generateTableRows(videoList, userActual);
         response.getWriter().write(tableRows);
     }
 
-    private String generateTableRows(List<Video> videoList) {
+    private String generateTableRows(List<Video> videoList, User userActual) {
         StringBuilder tableRows = new StringBuilder();
         
+
+         
         if (videoList == null || videoList.isEmpty()) {
             return "<tr><td colspan='8' style='text-align:center;'>There are no videos registered</td></tr>";
         }
@@ -52,12 +58,20 @@ public class VideoListServlet extends HttpServlet {
                          .append("<td>").append(video.getDescription()).append("</td>")
                          .append("<td>").append(video.getFormat()).append("</td>")
                          .append("<td>")
-                            .append("<button onclick=\"playVideo(").append(video.getId()).append(")\">Play</button> ")
-                            .append("<button onclick=\"editVideo(").append(video.getId()).append(")\">Edit</button> ")
-                            .append("<button onclick=\"deleteVideo(").append(video.getId()).append(")\">Delete</button>")
-                         .append("</td>")
+                            .append("<button onclick=\"playVideo(").append(video.getId()).append(")\">Play</button> ");
+
+
+                
+                if (user.getIdUser() == userActual.getIdUser() ){
+                    tableRows.append("<button onclick=\"editVideo(").append(video.getId()).append(")\">Edit</button> ")
+                             .append("<button onclick=\"deleteVideo(").append(video.getId()).append(")\">Delete</button>");
+                }
+                
+                tableRows.append("</td>")
                          .append("</tr>");
             }
+            
+            
         }
         
         return tableRows.toString();

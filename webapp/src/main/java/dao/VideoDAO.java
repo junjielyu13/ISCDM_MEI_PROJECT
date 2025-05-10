@@ -187,34 +187,48 @@ public class VideoDAO {
         return videos;
     }
     
-public List<Video> getVideosByDate(String dateStr) {
-    List<Video> videos = new ArrayList<>();
-    String sql = "SELECT * FROM VIDEOS WHERE DATE(UPLOADED_AT) = ?";
-    try (Connection conn = DatabaseConfig.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public List<Video> getVideosByDate(String dateStr) {
+        List<Video> videos = new ArrayList<>();
+        String sql = "SELECT * FROM VIDEOS WHERE DATE(UPLOADED_AT) = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setDate(1, java.sql.Date.valueOf(dateStr)); // 正确设置日期参数
+            stmt.setDate(1, java.sql.Date.valueOf(dateStr)); // 正确设置日期参数
 
-        try (ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Video video = new Video(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getString("url"),
-                        rs.getInt("user_id"),
-                        rs.getInt("views"),
-                        rs.getInt("duration"),
-                        rs.getString("format"),
-                        rs.getTimestamp("uploaded_at").toLocalDateTime()
-                );
-                videos.add(video);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Video video = new Video(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getString("description"),
+                            rs.getString("url"),
+                            rs.getInt("user_id"),
+                            rs.getInt("views"),
+                            rs.getInt("duration"),
+                            rs.getString("format"),
+                            rs.getTimestamp("uploaded_at").toLocalDateTime()
+                    );
+                    videos.add(video);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return videos;
     }
-    return videos;
-}
+    
+    public boolean incrementViews(int id) {
+        String sql = "UPDATE VIDEOS SET views = views + 1 WHERE id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

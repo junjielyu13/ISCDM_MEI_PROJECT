@@ -18,6 +18,7 @@
             response.sendRedirect("listVideos.jsp");
             return; 
         }
+        new VideoDAO().incrementViews(id);
     } catch (Exception e) {
         response.sendRedirect("listVideos.jsp");
         return;
