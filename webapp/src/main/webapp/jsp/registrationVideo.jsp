@@ -40,9 +40,9 @@
             <div class="register-btn">
                 <h2>Register Video</h2>  
             </div>
-           <div class="register-btn">
-               <a href="search.jsp" class="btn">Search</a>
-           </div>
+            <div class="register-btn">
+                <a href="search.jsp" class="btn">Search</a>
+            </div>
         </div>
 
 
@@ -70,9 +70,7 @@
             <input type="submit" value="Register Video">
             
         </form>
-        
-
-        
+       
     </div>
 </body>
 </html>

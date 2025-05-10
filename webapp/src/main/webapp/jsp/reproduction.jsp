@@ -31,7 +31,7 @@
         <title>reproduction</title>
         <link rel="stylesheet" href="../assets/index.css">
     </head>
-    <body>
+    <body class="container-list-video">
         <div class="user-info">
             <%
                 HttpSession sessionObj = request.getSession();
@@ -43,12 +43,35 @@
             %>
             <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
         </div>
-        
-        
-        <video width="640" height="360" controls>
-            <source src="http://localhost:8080/webapp<%= video.getUrl() %>" type="video/mp4">
-        </video>
-        
-        <a href="listVideo.jsp">to list</a>
+
+        <div style="display: flex;
+             justify-content: space-between;
+             align-items: center;
+             flex-wrap: nowrap;">
+
+            <div class="register-btn">
+                <a href="listVideo.jsp" class="btn">Back Video List</a>
+            </div>
+
+            <h2>Video: <%= video.getTitle() %></h2>
+
+            <div>
+            </div>
+        </div>
+
+        <div style="display: flex;
+             justify-content: center;
+             align-items: center;
+             flex-wrap: nowrap;">
+
+            <video width="640" height="360" controls>
+                <source src="http://localhost:8080/webapp<%= video.getUrl() %>" type="video/mp4">
+            </video>
+
+        </div>
+
+        <h3>Descriptions: <%= video.getDescription() %></h3>
+        <h3>Views: <%= video.getViews() %></h3>
+
     </body>
 </html>

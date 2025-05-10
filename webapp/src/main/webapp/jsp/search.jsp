@@ -10,9 +10,6 @@
         <link rel="stylesheet" href="../assets/index.css">
     </head>
     <body class="container-list-video">
-
-
-
         <div class="user-info">
             <%
                 HttpSession sessionObj = request.getSession();
@@ -43,23 +40,21 @@
             </div>
         </div>
 
-<div class="search-form-container">
-    <form onsubmit="event.preventDefault(); searchVideos();">
-        <label for="criterio">Buscar por:</label>
-        <select name="criterio" id="criterio">
-            <option value="autor">Author</option>
-            <option value="titulo">Title</option>
-            <option value="fecha">Date</option>
-        </select>
+        <div class="search-form-container">
+            <form onsubmit="event.preventDefault(); searchVideos();">
+                <label for="criterio">Buscar por:</label>
+                <select name="criterio" id="criterio">
+                    <option value="autor">Author</option>
+                    <option value="titulo">Title</option>
+                    <option value="fecha">Date</option>
+                </select>
 
-        <input type="text" name="valorBusqueda" id="textInput" placeholder="Escriba su búsqueda">
-        <input type="date" name="valorBusqueda" id="dateInput" style="display:none;">
+                <input type="text" name="valorBusqueda" id="textInput" placeholder="Escriba su búsqueda">
+                <input type="date" name="valorBusqueda" id="dateInput" style="display:none;">
 
-        <input type="submit" value="Buscar" class="btn">
-    </form>
-</div>
-
-
+                <input type="submit" value="Buscar" class="btn">
+            </form>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -80,7 +75,6 @@
         </table>
 
         <script>
-            // Cambiar el tipo de input si seleccionan "fecha"
             document.getElementById('criterio').addEventListener('change', function () {
                 const criterio = this.value;
                 const textInput = document.getElementById('textInput');
@@ -101,7 +95,6 @@
                 }
             });
 
-            // Ejecutar la búsqueda con AJAX
             function searchVideos() {
                 const criterio = document.getElementById('criterio').value;
                 let valorBusqueda;
