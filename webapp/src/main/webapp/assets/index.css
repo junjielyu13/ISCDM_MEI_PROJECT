@@ -197,3 +197,39 @@ input[type="text"], input[type="email"], input[type="password"] {
     background-color: #0056b3;
 }
 
+.regstrationVideoHeader{
+     display: flex;
+     flex-direction: row; 
+    justify-content: space-between;
+
+}
+
+.search-form-container {
+    width: 50%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-form-container label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+.search-form-container select,
+.search-form-container input[type="text"],
+.search-form-container input[type="date"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+

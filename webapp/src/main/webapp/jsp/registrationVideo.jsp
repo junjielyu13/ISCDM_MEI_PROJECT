@@ -29,7 +29,22 @@
             <p>Welcome, <%= user.getUsername() %>!  <a href="login.jsp">change user</a> </p>
         </div>
         
-        <h2>Register Video</h2>
+        <div style="display: flex;
+                    flex-direction: row; 
+                    align-items: center; 
+                    justify-content: space-between;">
+            <div class="register-btn">
+               <a href="listVideo.jsp" class="btn">Back Video List</a>
+           </div>
+
+            <div class="register-btn">
+                <h2>Register Video</h2>  
+            </div>
+           <div class="register-btn">
+               <a href="search.jsp" class="btn">Search</a>
+           </div>
+        </div>
+
 
         <c:if test="${not empty error}">
             <p class="error">${error}</p>
@@ -56,13 +71,7 @@
             
         </form>
         
-        <div class="register-btn">
-            <a href="listVideo.jsp" class="btn">View Video List</a>
-        </div>
-        
-        <div class="register-btn">
-            <a href="search.jsp" class="btn">Search</a>
-        </div>
+
         
     </div>
 </body>
