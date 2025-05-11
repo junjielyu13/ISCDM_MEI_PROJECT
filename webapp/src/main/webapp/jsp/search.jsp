@@ -114,6 +114,29 @@
                         })
                         .catch(error => console.error('Error fetching search results:', error));
             }
+
+            function playVideo(id) {
+                window.location.href = "reproduction.jsp?id=" + id;
+            }
+
+            function editVideo(id) {
+                window.location.href = "editVideo.jsp?id=" + id;
+            }
+
+            function deleteVideo(id) {
+                if (confirm("Are you sure you want to delete this video?")) {
+                    fetch("deleteVideoServlet?id=" + id, {
+                        method: 'GET'
+                    })
+                            .then(response => {
+                                if (response.ok) {
+                                    location.reload();
+                                } else {
+                                    alert("Failed to delete video");
+                                }
+                            });
+                }
+            }
         </script>
     </body>
 </html>
