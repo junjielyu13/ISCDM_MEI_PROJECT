@@ -30,6 +30,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>reproduction</title>
         <link rel="stylesheet" href="../assets/index.css">
+        <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+        <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/playerjs@1.1/player.min.js"></script>
+
     </head>
     <body class="container-list-video">
         <div class="user-info">
@@ -64,14 +68,27 @@
              align-items: center;
              flex-wrap: nowrap;">
 
-            <video width="640" height="360" controls>
-                <source src="http://localhost:8080/webapp<%= video.getUrl() %>" type="video/mp4">
-            </video>
+        <video width="640" height="360" controls>
+            <source src="http://localhost:8080/webapp/jsp/videoStreamServlet?id=<%= video.getId() %>" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
 
         </div>
 
         <h3>Descriptions: <%= video.getDescription() %></h3>
         <h3>Views: <%= video.getViews() %></h3>
+        
+          <div id="playerjs-video" style="width: 640px; height: 360px;"></div>
 
     </body>
+
+    <script>
+        window.onload = function () {
+            var player = new Playerjs({
+                id: "playerjs-video",
+                file: "http://localhost:8080/webapp/jsp/videoStreamServlet?id=<%= video.getId() %>"
+            });
+        };
+
+    </script>
 </html>
