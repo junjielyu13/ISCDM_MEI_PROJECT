@@ -1,9 +1,9 @@
 package model;
 
-
 import java.time.LocalDateTime;
 
 public class Video {
+
     private int id;
     private String title;
     private String description;
@@ -26,8 +26,8 @@ public class Video {
         this.format = format;
         this.uploadedAt = uploadedAt;
     }
-    
-    public Video(String title, String description, String url, int userId, int views, int duration, String format, LocalDateTime uploadedAt) {    
+
+    public Video(String title, String description, String url, int userId, int views, int duration, String format, LocalDateTime uploadedAt) {
         this.title = title;
         this.description = description;
         this.url = url;
@@ -54,7 +54,6 @@ public class Video {
     public void setTitle(String title) {
         this.title = title;
     }
-   
 
     public String getDescription() {
         return description;

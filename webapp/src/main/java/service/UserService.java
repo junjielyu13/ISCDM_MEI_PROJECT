@@ -11,22 +11,22 @@ public class UserService {
     public boolean validUser(User user) {
         return userDao.validUser(user) != null;
     }
-    
+
     public User getUserByID(String id) {
         return userDao.findByID(id);
     }
-        
+
     public User getUserByUsername(String username) {
         return userDao.findByUsername(username);
     }
-    
+
     public User getUserByEmail(String email) {
         return userDao.findByEmail(email);
     }
 
     public boolean registerUser(User user) {
         if (userDao.findByEmail(user.getEmail()) != null) {
-            return false; 
+            return false;
         }
         return userDao.save(user);
     }
@@ -41,5 +41,9 @@ public class UserService {
 
     public boolean deleteUser(String username) {
         return userDao.deleteUser(username);
+    }
+
+    public List<User> searchUsersByName(String name) {
+        return userDao.searchUsersByName(name);
     }
 }

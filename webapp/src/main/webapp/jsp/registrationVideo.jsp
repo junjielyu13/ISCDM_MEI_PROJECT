@@ -1,6 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Video" %>
-<%@page import="dao.VideoDAO" %>
 <%@page import="jakarta.servlet.http.HttpSession" %>
 <%@page import="java.util.Objects" %>
 <%@page import="model.User" %>

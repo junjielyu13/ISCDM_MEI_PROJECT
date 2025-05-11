@@ -1,14 +1,16 @@
 package model;
 
 public class User {
-    private int idUser;
-    private String username;    
-    private String password;    
-    private String email;   
-    private String name;      
-    private String surname;   
 
-    public User() {}
+    private int idUser;
+    private String username;
+    private String password;
+    private String email;
+    private String name;
+    private String surname;
+
+    public User() {
+    }
 
     public User(String email, String password) {
         this.email = email;
@@ -20,7 +22,7 @@ public class User {
         this.surname = surname;
         this.email = email;
     }
-    
+
     public User(String id, String username, String surname, String email) {
         this.idUser = Integer.parseInt(id);
         this.username = username;
@@ -35,7 +37,7 @@ public class User {
         this.name = name;
         this.surname = surname;
     }
-    
+
     public User(String userId, String username, String password, String email, String name, String surname) {
         this.idUser = Integer.parseInt(userId);
         this.username = username;
@@ -45,7 +47,6 @@ public class User {
         this.surname = surname;
     }
 
- 
     public int getIdUser() {
         return idUser;
     }
@@ -53,7 +54,7 @@ public class User {
     public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
-    
+
     public String getUsername() {
         return username;
     }

@@ -12,22 +12,21 @@ public class VideoDAO {
     // Find a video by its ID
     public Video findById(int id) {
         String sql = "SELECT * FROM VIDEOS WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 return new Video(rs.getInt("id"),
-                                 rs.getString("title"),
-                                 rs.getString("description"),
-                                 rs.getString("url"),
-                                 rs.getInt("user_id"),
-                                 rs.getInt("views"),
-                                 rs.getInt("duration"),
-                                 rs.getString("format"),
-                                 rs.getTimestamp("uploaded_at").toLocalDateTime());
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("url"),
+                        rs.getInt("user_id"),
+                        rs.getInt("views"),
+                        rs.getInt("duration"),
+                        rs.getString("format"),
+                        rs.getTimestamp("uploaded_at").toLocalDateTime());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,13 +37,12 @@ public class VideoDAO {
     // Save a new video
     public boolean save(Video video) {
         String sql = "INSERT INTO VIDEOS (title, description, url, user_id, views, duration, format, uploaded_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, video.getTitle());
             stmt.setString(2, video.getDescription());
             stmt.setString(3, video.getUrl());
-            stmt.setInt(4,video.getUserId());
+            stmt.setInt(4, video.getUserId());
             stmt.setInt(5, video.getViews());
             stmt.setInt(6, video.getDuration());
             stmt.setString(7, video.getFormat());
@@ -62,9 +60,7 @@ public class VideoDAO {
     public List<Video> getAllVideos() {
         List<Video> videos = new ArrayList<>();
         String sql = "SELECT * FROM VIDEOS";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Video video = new Video(
@@ -89,8 +85,7 @@ public class VideoDAO {
     // Update a video's details (e.g., title, description, etc.)
     public boolean update(Video video) {
         String sql = "UPDATE VIDEOS SET title = ?, description = ?, url = ?, user_id = ?, views = ?, duration = ?, format = ?, uploaded_at = ? WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, video.getTitle());
             stmt.setString(2, video.getDescription());
@@ -113,8 +108,7 @@ public class VideoDAO {
     // Delete a video by its ID
     public boolean delete(int id) {
         String sql = "DELETE FROM VIDEOS WHERE ID = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             int rowsDeleted = stmt.executeUpdate();
@@ -124,13 +118,12 @@ public class VideoDAO {
         }
         return false; // Return false if delete fails
     }
-    
+
     // Get all videos
     public List<Video> getVideosByTitle(String title) {
         List<Video> videos = new ArrayList<>();
         String sql = "SELECT * FROM VIDEOS WHERE TITLE LIKE ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, "%" + title + "%");
 
@@ -154,16 +147,14 @@ public class VideoDAO {
             e.printStackTrace();
         }
         return videos;
-}
+    }
 
-    
     public List<Video> getVideosByUserId(int id) {
         List<Video> videos = new ArrayList<>();
         String sql = "SELECT * FROM VIDEOS WHERE USER_ID = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id); 
+            stmt.setInt(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -186,14 +177,13 @@ public class VideoDAO {
         }
         return videos;
     }
-    
+
     public List<Video> getVideosByDate(String dateStr) {
         List<Video> videos = new ArrayList<>();
         String sql = "SELECT * FROM VIDEOS WHERE DATE(UPLOADED_AT) = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setDate(1, java.sql.Date.valueOf(dateStr)); // 正确设置日期参数
+            stmt.setDate(1, java.sql.Date.valueOf(dateStr));
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -216,11 +206,10 @@ public class VideoDAO {
         }
         return videos;
     }
-    
+
     public boolean incrementViews(int id) {
         String sql = "UPDATE VIDEOS SET views = views + 1 WHERE id = ?";
-        try (Connection conn = DatabaseConfig.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConfig.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             int rowsUpdated = stmt.executeUpdate();

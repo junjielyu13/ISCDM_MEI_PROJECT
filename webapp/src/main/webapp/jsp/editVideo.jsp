@@ -1,18 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.Video" %>
-<%@page import="dao.VideoDAO" %>
+<%@page import="service.VideoService" %>
 <%@page import="java.util.Optional" %>
 <%@page import="jakarta.servlet.http.HttpSession" %>
 <%@page import="java.util.Objects" %>
 <%@page import="model.User" %>
 <%
     String idParam = request.getParameter("id");
+    
     int id = -1;
     Video video = null;
-
     try {
         id = Integer.parseInt(idParam);
-        video = new VideoDAO().findById(id); 
+        video = new VideoService().findById(id); 
 
         if (video == null) {
             response.sendRedirect("listVideos.jsp");
