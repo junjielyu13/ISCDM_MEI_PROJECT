@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 import model.Video;
 import service.VideoService;
@@ -50,6 +52,8 @@ public class VideoRegistrationServlet extends HttpServlet {
             request.setAttribute("error", "Invalid video file: " + e.getMessage());
         } catch (IOException e) {
             request.setAttribute("error", "Failed to upload video: " + e.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(VideoRegistrationServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         request.getRequestDispatcher("/jsp/registrationVideo.jsp").forward(request, response);
