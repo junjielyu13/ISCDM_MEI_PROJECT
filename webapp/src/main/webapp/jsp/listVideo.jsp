@@ -61,7 +61,12 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                fetch("videoListServlet")
+                const token = localStorage.getItem("jwt");
+                fetch("videoListServlet", {
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                })
                         .then(response => response.text())
                         .then(html => {
                             document.getElementById("videoTableBody").innerHTML = html;

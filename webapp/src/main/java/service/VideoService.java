@@ -1,5 +1,6 @@
 package service;
 
+import crypto.VideoCrypto;
 import dao.VideoDAO;
 import jakarta.servlet.http.Part;
 import java.io.File;
@@ -19,7 +20,7 @@ public class VideoService {
 
     private final UserService userService = new UserService();
     private final VideoDAO videoDao = new VideoDAO();
-    private static String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/src/main/webapp/uploads/videos/";
+    private static final String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/src/main/webapp/uploads/videos/";
 
     public boolean validVideo(Video video) {
         return videoDao.findById(video.getId()) != null;
@@ -62,7 +63,7 @@ public class VideoService {
     }
 
     public Video downloadVideo(String title, String description, Part videoPart, String fileName, User user)
-            throws IOException, IllegalArgumentException {
+            throws IOException, IllegalArgumentException, Exception {
         if (fileName == null || fileName.isEmpty()) {
             throw new IllegalArgumentException("File name cannot be null or empty");
         }
@@ -98,6 +99,8 @@ public class VideoService {
                 fileExtension,
                 LocalDateTime.now()
         );
+        
+        VideoCrypto.encryptFile(uploadDir + uniqueFileName, uploadDir + uniqueFileName + ".enc");
 
         return video;
     }

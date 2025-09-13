@@ -4,6 +4,7 @@
  */
 package controller;
 
+import crypto.VideoCrypto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Video;
 import service.VideoService;
 
@@ -26,90 +29,96 @@ public class VideoStreamServlet extends HttpServlet {
     
     private static final String uploadDir = "/home/alumne/ISCDM_MEI_PROJECT/webapp/src/main/webapp/";
 
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String idstr = request.getParameter("id");
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idstr = request.getParameter("id");
 
-    if (idstr == null) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return;
-    }
+        if (idstr == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
-    int id;
-    try {
-        id = Integer.parseInt(idstr);
-    } catch (NumberFormatException e) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return;
-    }
-
-    Video video = new VideoService().findById(id);
-    if (video == null) {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return;
-    }
-
-    File videoFile = new File(uploadDir + video.getUrl());
-    if (!videoFile.exists()) {
-        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return;
-    }
-
-    String range = request.getHeader("Range");
-    long length = videoFile.length();
-    long start = 0;
-    long end = length - 1;
-
-    if (range != null && range.startsWith("bytes=")) {
-        // 支持 Range 请求
-        String[] parts = range.substring(6).split("-");
+        int id;
         try {
-            start = Long.parseLong(parts[0]);
-            if (parts.length > 1 && !parts[1].isEmpty()) {
-                end = Long.parseLong(parts[1]);
-            }
+            id = Integer.parseInt(idstr);
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        if (end >= length) {
-            end = length - 1;
-        }
-
-        if (start > end || start >= length) {
-            response.setStatus(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
+        Video video = new VideoService().findById(id);
+        if (video == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-    }
+        File videoFile = new File(uploadDir + video.getUrl());
+        try {
+            VideoCrypto.decryptFile(uploadDir + video.getUrl() + ".enc", uploadDir + video.getUrl() + ".enc.mp4");
+        } catch (Exception ex) {
+            Logger.getLogger(VideoStreamServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    long contentLength = end - start + 1;
+        if (!videoFile.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
-    response.setContentType("video/mp4");
-    response.setHeader("Content-Length", String.valueOf(contentLength));
-    response.setHeader("Accept-Ranges", "bytes");
+        String range = request.getHeader("Range");
+        long length = videoFile.length();
+        long start = 0;
+        long end = length - 1;
 
-    if (range != null) {
-        response.setHeader("Content-Range", "bytes " + start + "-" + end + "/" + length);
-    }
+        if (range != null && range.startsWith("bytes=")) {
+            // 支持 Range 请求
+            String[] parts = range.substring(6).split("-");
+            try {
+                start = Long.parseLong(parts[0]);
+                if (parts.length > 1 && !parts[1].isEmpty()) {
+                    end = Long.parseLong(parts[1]);
+                }
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
+            if (end >= length) {
+                end = length - 1;
+            }
 
-    try (InputStream inputStream = new FileInputStream(videoFile);
-         var outputStream = response.getOutputStream()) {
+            if (start > end || start >= length) {
+                response.setStatus(HttpServletResponse.SC_REQUESTED_RANGE_NOT_SATISFIABLE);
+                return;
+            }
 
-        inputStream.skip(start);
-        byte[] buffer = new byte[4096];
-        long remaining = contentLength;
-        int bytesRead;
+            response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+        }
 
-        while (remaining > 0 && (bytesRead = inputStream.read(buffer, 0, (int)Math.min(buffer.length, remaining))) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-            remaining -= bytesRead;
+        long contentLength = end - start + 1;
+
+        response.setContentType("video/mp4");
+        response.setHeader("Content-Length", String.valueOf(contentLength));
+        response.setHeader("Accept-Ranges", "bytes");
+
+        if (range != null) {
+            response.setHeader("Content-Range", "bytes " + start + "-" + end + "/" + length);
+        }
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        try (InputStream inputStream = new FileInputStream(videoFile);
+             var outputStream = response.getOutputStream()) {
+
+            inputStream.skip(start);
+            byte[] buffer = new byte[4096];
+            long remaining = contentLength;
+            int bytesRead;
+
+            while (remaining > 0 && (bytesRead = inputStream.read(buffer, 0, (int)Math.min(buffer.length, remaining))) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                remaining -= bytesRead;
+            }
         }
     }
-}
 
 }
